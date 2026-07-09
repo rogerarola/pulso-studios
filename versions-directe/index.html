@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -330,9 +330,10 @@
   </main>
 
   <script>
-    // ---- CONFIGURA AQUÍ LA CONTRASEÑA ----
+    // ---- CONFIGURA AQUÍ ----
+    const GATE_ENABLED = true;   // true = pide contraseña / false = acceso libre
     const PASSWORD = "pulso2026";
-    // ---------------------------------------
+    // -------------------------
 
     const gate = document.getElementById('gate');
     const content = document.getElementById('content');
@@ -345,21 +346,25 @@
       content.style.display = 'block';
     }
 
-    if (sessionStorage.getItem('psv_ok') === '1') {
+    if (!GATE_ENABLED) {
       unlock();
-    }
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (input.value === PASSWORD) {
-        sessionStorage.setItem('psv_ok', '1');
+    } else {
+      if (sessionStorage.getItem('psv_ok') === '1') {
         unlock();
-      } else {
-        error.textContent = 'Contrasenya incorrecta';
-        input.value = '';
-        input.focus();
       }
-    });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (input.value === PASSWORD) {
+          sessionStorage.setItem('psv_ok', '1');
+          unlock();
+        } else {
+          error.textContent = 'Contrasenya incorrecta';
+          input.value = '';
+          input.focus();
+        }
+      });
+    }
   </script>
 
 </body>
