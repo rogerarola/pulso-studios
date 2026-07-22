@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pulso Studios — Versions pel Directe</title>
+<meta name="robots" content="noindex, nofollow" />
+<style>
+  @font-face {
+    font-family: 'AlteHaasGrotesk';
+    src: local('Helvetica Neue'), local('Arial');
+  }
+
+  :root {
+    --black: #000000;
+    --white: #ffffff;
+    --grey: rgba(0,0,0,0.45);
+    --grey-line: rgba(0,0,0,0.18);
+    --box-bg: #f5f5f5;
+    --font: 'AlteHaasGrotesk', 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- GATE ---------- */
+  #gate {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: var(--white);
+    z-index: 100;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  #gate h1 {
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0 0 2.5rem;
+    color: var(--grey);
+  }
+
+  #gate form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  #gate input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--grey-line);
+    color: var(--black);
+    font-family: var(--font);
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+    padding: 0.6rem 0;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  #gate input::placeholder { color: var(--grey); }
+  #gate input:focus { border-bottom-color: var(--black); }
+
+  #gate button {
+    margin-top: 0.5rem;
+    background: none;
+    border: 1px solid var(--grey-line);
+    color: var(--black);
+    font-family: var(--font);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  #gate button:hover { background: var(--black); color: var(--white); }
+
+  #gate-error {
+    margin-top: 1.2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: #ff6b5e;
+    height: 1em;
+  }
+
+  /* ---------- MAIN CONTENT ---------- */
+  #content {
+    display: none;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 6rem 1.5rem 5rem;
+  }
+
+  header.page-head {
+    text-align: center;
+    margin-bottom: 4.5rem;
+  }
+
+  header.page-head span.eyebrow {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 1.2rem;
+  }
+
+  header.page-head h1 {
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin: 0 0 1.2rem;
+  }
+
+  header.page-head p {
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    color: var(--grey);
+    max-width: 440px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ---------- TRACK LIST ---------- */
+  .tracks {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .track {
+    background: var(--box-bg);
+    border-radius: 18px;
+    padding: 1.75rem 1.75rem;
+  }
+
+  .track-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .track-index {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--grey);
+  }
+
+  .track-title {
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    margin: 0;
+    flex: 1 1 auto;
+  }
+
+  .track-artist {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--grey);
+    margin: 0.2rem 0 0;
+  }
+
+  .track-service {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--white);
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    white-space: nowrap;
+  }
+
+  audio {
+    width: 100%;
+    height: 34px;
+    filter: grayscale(1) contrast(1.1);
+  }
+
+  footer.page-foot {
+    margin-top: 5rem;
+    text-align: center;
+  }
+
+  footer.page-foot p {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--grey);
+  }
+
+  footer.page-foot a {
+    color: var(--black);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    #content { padding: 4.5rem 1.2rem 4rem; }
+    .track-meta { flex-direction: column; align-items: flex-start; }
+    .track { padding: 1.4rem 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ PASSWORD GATE ============ -->
+  <div id="gate">
+    <h1>Identifica't</h1>
+    <form id="gateForm" autocomplete="off">
+      <input type="password" id="gatePass" placeholder="Contrasenya" autocomplete="new-password" />
+      <button type="submit">Entrar</button>
+    </form>
+    <p id="gate-error"></p>
+  </div>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main id="content">
+
+    <header class="page-head">
+      <span class="eyebrow">Pulso Studios</span>
+      <h1>Versions pel Directe</h1>
+      <p>Una selecció de versions produïdes, mesclades i masteritzades a Pulso Studios perquè puguis escoltar com sonarà el teu proper directe.</p>
+    </header>
+
+    <div class="tracks">
+
+      <!-- TRACK 1 -->
+      <article class="track">
+        <div class="track-meta">
+          <div>
+            <span class="track-index">01</span>
+            <p class="track-title">Uptown Funk</p>
+            <p class="track-artist">Tech House</p>
+          </div>
+          <span class="track-service">Producció, Mixing & Mastering</span>
+        </div>
+        <audio controls preload="none">
+          <source src="audio/track-01.mp3" type="audio/mpeg" />
+          El teu navegador no suporta audio HTML5.
+        </audio>
+      </article>
+
+      <!-- TRACK 2 -->
+      <article class="track">
+        <div class="track-meta">
+          <div>
+            <span class="track-index">02</span>
+            <p class="track-title">L'Amour Toujours</p>
+            <p class="track-artist">EDM</p>
+          </div>
+          <span class="track-service">Producció, Mixing & Mastering</span>
+        </div>
+        <audio controls preload="none">
+          <source src="audio/track-02.mp3" type="audio/mpeg" />
+          El teu navegador no suporta audio HTML5.
+        </audio>
+      </article>
+
+      <!-- TRACK 3 -->
+      <article class="track">
+        <div class="track-meta">
+          <div>
+            <span class="track-index">03</span>
+            <p class="track-title">NUEVAYoL</p>
+            <p class="track-artist">Afro House</p>
+          </div>
+          <span class="track-service">Producció, Mixing & Mastering</span>
+        </div>
+        <audio controls preload="none">
+          <source src="audio/track-03.mp3" type="audio/mpeg" />
+          El teu navegador no suporta audio HTML5.
+        </audio>
+      </article>
+
+      <!-- TRACK 4 -->
+      <article class="track">
+        <div class="track-meta">
+          <div>
+            <span class="track-index">04</span>
+            <p class="track-title">Ja Dormiré</p>
+            <p class="track-artist">Techno</p>
+          </div>
+          <span class="track-service">Producció, Mixing & Mastering</span>
+        </div>
+        <audio controls preload="none">
+          <source src="audio/track-04.mp3" type="audio/mpeg" />
+          El teu navegador no suporta audio HTML5.
+        </audio>
+      </article>
+
+      <!-- TRACK 5 -->
+      <article class="track">
+        <div class="track-meta">
+          <div>
+            <span class="track-index">05</span>
+            <p class="track-title">Mediterrània</p>
+            <p class="track-artist">Trap</p>
+          </div>
+          <span class="track-service">Producció, Mixing & Mastering</span>
+        </div>
+        <audio controls preload="none">
+          <source src="audio/track-05.mp3" type="audio/mpeg" />
+          El teu navegador no suporta audio HTML5.
+        </audio>
+      </article>
+
+    </div>
+
+    <footer class="page-foot">
+      <p>¿Tens algun dubte?</p>
+      <p>Escriu-nos a <a href="mailto:contact@pulso-studios.com">contact@pulso-studios.com</a></p>
+    </footer>
+
+  </main>
+
+  <script>
+    // ---- CONFIGURA AQUÍ LA CONTRASEÑA ----
+    const GATE_ENABLED = false;   // true = pide contraseña / false = acceso libre
+    const PASSWORD = "pulso2026";
+    // -------------------------
+
+    const gate = document.getElementById('gate');
+    const content = document.getElementById('content');
+    const form = document.getElementById('gateForm');
+    const input = document.getElementById('gatePass');
+    const error = document.getElementById('gate-error');
+
+    function unlock() {
+      gate.style.display = 'none';
+      content.style.display = 'block';
+    }
+
+    if (!GATE_ENABLED) {
+      unlock();
+    } else {
+      if (sessionStorage.getItem('psv_ok') === '1') {
+        unlock();
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (input.value === PASSWORD) {
+          sessionStorage.setItem('psv_ok', '1');
+          unlock();
+        } else {
+          error.textContent = 'Contrasenya incorrecta';
+          input.value = '';
+          input.focus();
+        }
+      });
+    }
+
+    // ---- Pausar la resta de tracks quan un comença a sonar ----
+    const allAudios = document.querySelectorAll('#content audio');
+    allAudios.forEach(function (audio) {
+      audio.addEventListener('play', function () {
+        allAudios.forEach(function (other) {
+          if (other !== audio) {
+            other.pause();
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
