@@ -89,7 +89,7 @@
           var r = media.getBoundingClientRect();
           var x = (e.clientX - r.left) / r.width - 0.5;
           var y = (e.clientY - r.top) / r.height - 0.5;
-          var MAX_TILT = 3.5; /* degrees at the very edge of the cover */
+          var MAX_TILT = 2.5; /* degrees at the very edge of the cover */
           media.style.setProperty('--ry', (x * 2 * MAX_TILT).toFixed(2) + 'deg');
           media.style.setProperty('--rx', (y * -2 * MAX_TILT).toFixed(2) + 'deg');
         });
