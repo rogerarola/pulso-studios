@@ -17,9 +17,9 @@ STRINGS = {
         "path": "/",
         "locale": "en_US",
         "alt_locale": "es_ES",
-        "title": "Pulso Studios | EDM Mixing, Mastering & Music Production Studio",
+        "title": "Pulso Studios — EDM Mixing, Mastering & Music Production Studio",
         "description": "Pulso Studios is a professional mixing, mastering and music production studio for EDM artists and labels. DSP-ready, club-ready sound through precise engineering.",
-        "og_title": "Pulso Studios | EDM Mixing, Mastering & Music Production",
+        "og_title": "Pulso Studios — EDM Mixing, Mastering & Music Production",
         "og_description": "Professional mixing, mastering and production for EDM artists and labels. Precise, DSP-ready sound engineering for electronic music.",
         "og_alt": "Pulso Studios. EDM mixing, mastering and music production",
         "skip": "Skip to content",
@@ -65,9 +65,9 @@ STRINGS = {
         "path": "/es/",
         "locale": "es_ES",
         "alt_locale": "en_US",
-        "title": "Pulso Studios | Estudio de mezcla, mastering y producción de EDM",
+        "title": "Pulso Studios — Estudio de mezcla, mastering y producción de EDM",
         "description": "Pulso Studios es un estudio profesional de mezcla, masterización y producción musical para artistas y sellos de EDM. Sonido listo para DSPs y para el club.",
-        "og_title": "Pulso Studios | Mezcla, mastering y producción de EDM",
+        "og_title": "Pulso Studios — Mezcla, mastering y producción de EDM",
         "og_description": "Mezcla, masterización y producción profesional para artistas y sellos de EDM. Ingeniería de sonido precisa para música electrónica.",
         "og_alt": "Pulso Studios. Mezcla, mastering y producción musical de EDM",
         "skip": "Saltar al contenido",
@@ -312,10 +312,6 @@ def page(lang):
       </div>
       <div class="hero-row">
         <h1 class="hero-sub">{t['h1']}</h1>
-        <div class="hero-cta">
-          <a class="btn btn--solid" href="#contact">{t['cta']}</a>
-          <a class="btn" href="#work">{t['nav_work']}</a>
-        </div>
       </div>
     </section>
 
@@ -463,7 +459,7 @@ VERSIONS = {
     "ca": {
         "dir": "versions-pel-directe",
         "home": "/",
-        "page_title": "Versions pel directe | Pulso Studios",
+        "page_title": "Pulso Studios — Versions pel directe",
         "share_description": "Una selecció de versions produïdes, mesclades i masteritzades a Pulso Studios.",
         "title_lines": ["versions", "pel directe"],
         "title_label": "Versions pel directe",
@@ -489,7 +485,7 @@ VERSIONS = {
     "es": {
         "dir": "versiones-para-el-directo",
         "home": "/es/",
-        "page_title": "Versiones para el directo | Pulso Studios",
+        "page_title": "Pulso Studios — Versiones para el directo",
         "share_description": "Una selección de versiones producidas, mezcladas y masterizadas en Pulso Studios.",
         "title_lines": ["versiones", "para el directo"],
         "title_label": "Versiones para el directo",
@@ -643,7 +639,6 @@ def versions_page(lang):
         <p class="hero-sub">{t['intro']}</p>
         <div class="hero-cta">
           <a class="btn btn--solid" href="#tracks">{t['cta_listen']}</a>
-          <a class="btn" href="#contact">{t['cta_contact']}</a>
         </div>
       </div>
     </section>

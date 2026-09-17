@@ -34,7 +34,7 @@
 }
 
 /* ── TRACKS ── */
-#tracks { padding-block: clamp(4rem, 9vw, 8rem) var(--section-y); }
+#tracks { --tracks-top: clamp(4rem, 9vw, 8rem); padding-block: var(--tracks-top) var(--section-y); scroll-margin-top: calc(1.5rem - var(--tracks-top)); }
 .tracks { list-style: none; border-top: 1px solid var(--fg); }
 .track {
   display: grid;

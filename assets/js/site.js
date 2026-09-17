@@ -78,6 +78,28 @@
     });
   }
 
+  /* ── Artwork: leans a few degrees toward the pointer (desktop only) ── */
+  if (!reduce && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.project-media').forEach(function (media) {
+      var raf = 0;
+      media.addEventListener('pointermove', function (e) {
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = 0;
+          var r = media.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - 0.5;
+          var y = (e.clientY - r.top) / r.height - 0.5;
+          media.style.setProperty('--ry', (x * 5).toFixed(2) + 'deg');
+          media.style.setProperty('--rx', (y * -5).toFixed(2) + 'deg');
+        });
+      });
+      media.addEventListener('pointerleave', function () {
+        media.style.setProperty('--rx', '0deg');
+        media.style.setProperty('--ry', '0deg');
+      });
+    });
+  }
+
   /* ── FAQ accordion (one open at a time; all answers stay in the DOM for search engines) ── */
   var triggers = document.querySelectorAll('.faq-trigger');
   function setOpen(trigger, open) {
