@@ -5,15 +5,16 @@
 Pulso Studios helps electronic music producers and labels turn raw ideas into polished, radio-ready and club-ready records through precise sound engineering.
 
 ## Services
-- Mixing — professional mixing for EDM and electronic music tracks.
-- Mastering — radio-ready and club-ready mastering for electronic music releases.
-- Music Production — production services tailored for EDM artists.
+- Mixing - professional mixing for EDM and electronic music tracks.
+- Mastering - radio-ready and club-ready mastering for electronic music releases.
+- Music Production - production services tailored for EDM artists.
 
 ## Genres
 Primarily EDM and related electronic music genres.
 
 ## Contact
-- Website: https://pulso-studios.com/
+- Website (English): https://pulso-studios.com/
+- Website (Spanish): https://pulso-studios.com/es/
 - Email: contact@pulso-studios.com
 
 ## FAQ

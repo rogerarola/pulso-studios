@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# AI / answer-engine crawlers — allowed on purpose (GEO)
+# AI / answer-engine crawlers - allowed on purpose (GEO)
 User-agent: GPTBot
 Allow: /
 
