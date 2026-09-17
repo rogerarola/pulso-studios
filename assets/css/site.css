@@ -399,8 +399,8 @@ footer { background: var(--bg); color: var(--fg); }
   }
   .js [data-reveal].is-in { opacity: 1; transform: none; }
 
-  .project-media { transition: transform 0.9s var(--ease); }
-  .js [data-wipe] .project-media { clip-path: inset(100% 0 0 0); transition: clip-path 1.3s var(--ease), transform 0.9s var(--ease); }
+  .project-media { transition: transform 0.45s var(--ease); }
+  .js [data-wipe] .project-media { clip-path: inset(100% 0 0 0); transition: clip-path 1.3s var(--ease), transform 0.45s var(--ease); }
   .js [data-wipe] .project-media-inner { transform: scale(1.18); }
   .js [data-wipe].is-in .project-media { clip-path: inset(0 0 0 0); }
   .js [data-wipe].is-in .project-media-inner { transform: scale(1); }
@@ -419,6 +419,7 @@ footer { background: var(--bg); color: var(--fg); }
     }
     @keyframes word-on { to { opacity: 1; } }
 
+    /* The two covers drift at slightly different speeds while scrolling (desktop only, no rotation) */
     @media (min-width: 768px) {
       .project:nth-child(1) { animation: drift-a linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
       .project:nth-child(2) { animation: drift-b linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }

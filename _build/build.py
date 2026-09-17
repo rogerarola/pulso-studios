@@ -12,6 +12,13 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE = "https://pulso-studios.com"
 EMAIL = "contact@pulso-studios.com"
 
+
+def asset(path):
+    """/assets/... URL plus a short content hash, so browsers never show a stale CSS/JS."""
+    import hashlib
+    digest = hashlib.md5((ROOT / path.lstrip("/")).read_bytes()).hexdigest()[:8]
+    return f"{path}?v={digest}"
+
 STRINGS = {
     "en": {
         "path": "/",
@@ -272,7 +279,7 @@ def page(lang):
 
   <link rel="preload" href="/assets/fonts/AlteHaasGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/assets/fonts/AlteHaasGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link rel="stylesheet" href="{asset('/assets/css/site.css')}" />
   <script>document.documentElement.classList.add('js');</script>
 
   <!-- Structured data: Organization, WebSite, WebPage, FAQPage -->
@@ -429,7 +436,7 @@ def page(lang):
     </div>
   </footer>
 
-  <script src="/assets/js/site.js" defer></script>
+  <script src="{asset('/assets/js/site.js')}" defer></script>
 </body>
 </html>
 """
@@ -585,8 +592,8 @@ def versions_page(lang):
 
   <link rel="preload" href="/assets/fonts/AlteHaasGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/assets/fonts/AlteHaasGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/assets/css/site.css" />
-  <link rel="stylesheet" href="/assets/css/versions.css" />
+  <link rel="stylesheet" href="{asset('/assets/css/site.css')}" />
+  <link rel="stylesheet" href="{asset('/assets/css/versions.css')}" />
   <script>
     // ---- PASSWORD GATE: change it in _build/build.py (GATE) or right here ----
     window.PULSO_GATE = {json.dumps(GATE)};
@@ -676,8 +683,8 @@ def versions_page(lang):
     </div>
   </footer>
 
-  <script src="/assets/js/site.js" defer></script>
-  <script src="/assets/js/versions.js" defer></script>
+  <script src="{asset('/assets/js/site.js')}" defer></script>
+  <script src="{asset('/assets/js/versions.js')}" defer></script>
 </body>
 </html>
 """
