@@ -439,8 +439,260 @@ def page(lang):
 """
 
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Private showcase pages (not indexed, not in the sitemap, not linked from home)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Set enabled to True to ask for the password before showing the page.
+# Note: this check runs in the browser, so it keeps casual visitors out but it
+# is not real security (the password can be read in the page source).
+GATE = {"enabled": False, "password": "pulso2026"}
+
+AUDIO_BASE = "/versions-pel-directe/audio/"
+TRACKS = [
+    # (file, title, genre, duration in seconds)
+    ("track-01.mp3", "Uptown Funk", "Tech House", 107.5),
+    ("track-02.mp3", "L'Amour Toujours", "EDM", 68.6),
+    ("track-03.mp3", "NUEVAYoL", "Afro House", 33.2),
+    ("track-04.mp3", "Ja Dormiré", "Techno", 30.0),
+    ("track-05.mp3", "Mediterrània", "Trap", 27.0),
+]
+
+VERSIONS = {
+    "ca": {
+        "dir": "versions-pel-directe",
+        "home": "/",
+        "page_title": "Versions pel directe | Pulso Studios",
+        "share_description": "Una selecció de versions produïdes, mesclades i masteritzades a Pulso Studios.",
+        "title_lines": ["versions", "pel directe"],
+        "title_label": "Versions pel directe",
+        "title_vw": ("15vw", "17vw"),
+        "intro": "Una selecció de versions produïdes, mesclades i masteritzades a Pulso Studios perquè puguis escoltar com sonarà el teu proper directe.",
+        "cta_listen": "Escolta-les",
+        "cta_contact": "Contacte",
+        "tracks_h2": "Les versions",
+        "play": "Reprodueix",
+        "pause": "Pausa",
+        "seek": "Posició de",
+        "audio_error": "No s'ha pogut carregar l'àudio. Torna-ho a provar.",
+        "contact_h2": "Tens algun dubte?",
+        "contact_note": "Escriu-nos i en parlem.",
+        "skip": "Salta al contingut",
+        "nav_label": "Principal",
+        "lang_label": "Idioma",
+        "gate_title": "Identifica't",
+        "gate_label": "Contrasenya",
+        "gate_submit": "Entrar",
+        "gate_wrong": "Contrasenya incorrecta",
+    },
+    "es": {
+        "dir": "versiones-para-el-directo",
+        "home": "/es/",
+        "page_title": "Versiones para el directo | Pulso Studios",
+        "share_description": "Una selección de versiones producidas, mezcladas y masterizadas en Pulso Studios.",
+        "title_lines": ["versiones", "para el directo"],
+        "title_label": "Versiones para el directo",
+        "title_vw": ("12vw", "13.2vw"),
+        "intro": "Una selección de versiones producidas, mezcladas y masterizadas en Pulso Studios para que puedas escuchar cómo sonará tu próximo directo.",
+        "cta_listen": "Escúchalas",
+        "cta_contact": "Contacto",
+        "tracks_h2": "Las versiones",
+        "play": "Reproducir",
+        "pause": "Pausar",
+        "seek": "Posición de",
+        "audio_error": "No se ha podido cargar el audio. Vuelve a intentarlo.",
+        "contact_h2": "¿Tienes alguna duda?",
+        "contact_note": "Escríbenos y lo hablamos.",
+        "skip": "Saltar al contenido",
+        "nav_label": "Principal",
+        "lang_label": "Idioma",
+        "gate_title": "Identifícate",
+        "gate_label": "Contraseña",
+        "gate_submit": "Entrar",
+        "gate_wrong": "Contraseña incorrecta",
+    },
+}
+
+
+def title_letters(lines):
+    out, i = [], 0
+    for line in lines:
+        spans = []
+        for ch in line:
+            if ch == " ":
+                spans.append(f'<span class="sp" style="--i:{i}"></span>')
+            else:
+                spans.append(f'<span style="--i:{i}">{ch}</span>')
+            i += 1
+        out.append(f'<span class="wordmark-line" aria-hidden="true">{"".join(spans)}</span>')
+        i = max(0, i - 4)
+    return "\n          ".join(out)
+
+
+def clock(seconds):
+    s = round(seconds)
+    return f"{s // 60}:{s % 60:02d}"
+
+
+def versions_page(lang):
+    t = VERSIONS[lang]
+    url = f"{SITE}/{t['dir']}/"
+    ca_cur = ' aria-current="true"' if lang == "ca" else ""
+    es_cur = ' aria-current="true"' if lang == "es" else ""
+    genres = []
+    for _, _, genre, _ in TRACKS:
+        if genre not in genres:
+            genres.append(genre)
+    group = "".join(
+        ('<span class="outline">' if i % 2 else "<span>") + g.lower() + "</span><i></i>"
+        for i, g in enumerate(genres)
+    )
+    rows = "\n".join(
+        f"""          <li class="track" data-duration="{dur}" data-reveal style="--d:{i}">
+            <button type="button" class="track-play" aria-label="{t['play']} {title}"></button>
+            <h3 class="track-title">{title}</h3>
+            <p class="track-genre">{genre}</p>
+            <p class="track-time"><span class="track-current">0:00</span><span class="track-sep"> / </span><span class="track-total">{clock(dur)}</span></p>
+            <input type="range" class="track-seek" min="0" max="100" step="0.1" value="0" aria-label="{t['seek']} {title}" />
+            <p class="track-error" role="alert"></p>
+            <audio preload="none" src="{AUDIO_BASE}{f}"></audio>
+          </li>"""
+        for i, (f, title, genre, dur) in enumerate(TRACKS)
+    )
+    return f"""<!DOCTYPE html>
+<html lang="{lang}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{t['page_title']}</title>
+
+  <!-- Private page: keep it out of search engines. Do not add it to sitemap.xml or robots.txt. -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="referrer" content="no-referrer" />
+
+  <!-- Link preview when the URL is shared by WhatsApp or email (not SEO) -->
+  <meta property="og:site_name" content="Pulso Studios" />
+  <meta property="og:title" content="{t['page_title']}" />
+  <meta property="og:description" content="{t['share_description']}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{url}" />
+  <meta property="og:image" content="{SITE}/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <link rel="preload" href="/assets/fonts/AlteHaasGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/AlteHaasGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link rel="stylesheet" href="/assets/css/versions.css" />
+  <script>
+    // ---- PASSWORD GATE: change it in _build/build.py (GATE) or right here ----
+    window.PULSO_GATE = {json.dumps(GATE)};
+    (function () {{
+      var d = document.documentElement, ok = false;
+      d.classList.add('js');
+      try {{ ok = sessionStorage.getItem('psv_ok') === '1'; }} catch (e) {{}}
+      if (window.PULSO_GATE.enabled && !ok) d.classList.add('gated');
+    }})();
+  </script>
+</head>
+<body style="--title-vw:{t['title_vw'][0]};--title-vw-m:{t['title_vw'][1]}">
+
+  <div id="gate">
+    <h1 class="gate-title">{t['gate_title']}</h1>
+    <form class="gate-form" id="gateForm" autocomplete="off" data-wrong="{t['gate_wrong']}">
+      <div class="field">
+        <label for="gatePass">{t['gate_label']}</label>
+        <input type="password" class="contact-field" id="gatePass" autocomplete="off" required />
+      </div>
+      <button type="submit" class="btn btn--solid contact-submit">{t['gate_submit']}</button>
+      <p class="gate-error" id="gateError" role="alert"></p>
+    </form>
+  </div>
+
+  <a class="skip-link" href="#tracks">{t['skip']}</a>
+
+  <header>
+    <nav class="nav" aria-label="{t['nav_label']}">
+      <a class="nav-brand" href="{t['home']}">pulso studios</a>
+      <ul class="nav-links">
+        <li class="nav-lang" aria-label="{t['lang_label']}">
+          <a href="/versions-pel-directe/" lang="ca" hreflang="ca"{ca_cur}>CA</a><span aria-hidden="true">/</span><a href="/versiones-para-el-directo/" lang="es" hreflang="es"{es_cur}>ES</a>
+        </li>
+        <li><a class="nav-cta" href="#contact">{t['cta_contact']}</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="hero" class="v-hero">
+      <div class="hero-mark">
+        <div class="pulse" aria-hidden="true"><div class="pulse-scroll"><div class="pulse-ring"></div><div class="pulse-dot"></div></div></div>
+        <h1 class="wordmark v-title" aria-label="{t['title_label']}">
+          {title_letters(t['title_lines'])}
+        </h1>
+      </div>
+      <div class="hero-row">
+        <p class="hero-sub">{t['intro']}</p>
+        <div class="hero-cta">
+          <a class="btn btn--solid" href="#tracks">{t['cta_listen']}</a>
+          <a class="btn" href="#contact">{t['cta_contact']}</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="tracks" aria-labelledby="tracks-h">
+      <div class="wrap">
+        <h2 class="visually-hidden" id="tracks-h">{t['tracks_h2']}</h2>
+        <ul class="tracks" data-play="{t['play']}" data-pause="{t['pause']}" data-error="{t['audio_error']}">
+{rows}
+        </ul>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-group">{group}</div>
+        <div class="marquee-group">{group}</div>
+      </div>
+    </div>
+
+    <section id="contact" class="invert v-contact" aria-labelledby="contact-h">
+      <div class="wrap">
+        <h2 class="h2 contact-heading" id="contact-h" data-reveal>{t['contact_h2']}</h2>
+        <p class="v-contact-note" data-reveal style="--d:1">{t['contact_note']}</p>
+        <a class="link v-contact-mail" data-reveal style="--d:2" href="mailto:{EMAIL}">{EMAIL}</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="invert">
+    <div class="wrap footer-inner">
+      <a class="footer-brand" href="{t['home']}" style="text-decoration:none">pulso studios</a>
+      <span>&copy; <span id="year">2026</span> Pulso Studios</span>
+    </div>
+  </footer>
+
+  <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/js/versions.js" defer></script>
+</body>
+</html>
+"""
+
+
 if __name__ == "__main__":
     (ROOT / "index.html").write_text(page("en"), encoding="utf-8")
     (ROOT / "es").mkdir(exist_ok=True)
     (ROOT / "es" / "index.html").write_text(page("es"), encoding="utf-8")
-    print("built index.html and es/index.html")
+    for lang, t in VERSIONS.items():
+        (ROOT / t["dir"]).mkdir(exist_ok=True)
+        (ROOT / t["dir"] / "index.html").write_text(versions_page(lang), encoding="utf-8")
+    print("built index.html, es/index.html and the two private showcase pages")
